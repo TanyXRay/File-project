@@ -35,6 +35,11 @@ public class Basket {
         }
     }
 
+    /**
+     * Функция, где производится заполнение покупательской корзины данными.
+     *
+     * @param file текстовый или бинарный файл.
+     */
     public void fillProductBasket(File file) {
         while (true) {
             System.out.println("Выберите товар и количество или введите \"end\" ");
