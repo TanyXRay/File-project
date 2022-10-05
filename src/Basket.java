@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
@@ -9,7 +6,7 @@ import java.util.List;
 /**
  * Класс, описывающий покупательскую корзину.
  */
-public class Basket {
+public class Basket implements Serializable{
 
     private int[] prices;
     private String[] productsNames;
@@ -105,5 +102,32 @@ public class Basket {
         System.out.print("Корзина восстановлена!:" + "\n");
         basket.printCart();
         return basket;
+    }
+
+    /**
+     * Сохраняет покупательскую корзину в файл в бинарном формате.
+     *
+     * @param file файл в бинарном формате.
+     */
+    public void saveBin(File file) {
+        try (ObjectOutputStream objectOutputStream = new ObjectOutputStream(new FileOutputStream(file))) {
+            objectOutputStream.writeObject(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Восстанавливает объект корзины из бинарного файла, в который ранее она была сохранена.
+     *
+     * @param binFile файл в бинарном формате.
+     */
+    public static Basket loadFromBinFile(File binFile) throws IOException, ClassNotFoundException {
+        try (ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(binFile))) {
+            Basket basket = (Basket) objectInputStream.readObject();
+            System.out.print("Корзина восстановлена!:" + "\n");
+            basket.printCart();
+            return basket;
+        }
     }
 }
